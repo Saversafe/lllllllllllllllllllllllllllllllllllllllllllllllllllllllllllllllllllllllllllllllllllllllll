@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wingo Predictor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;700&display=swap');
+
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background-color: #111;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 0 0 10px yellow;
+            animation: colorChange 5s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            0% {
+                background-color: red;
+                box-shadow: 0 0 20px red;
+            }
+            50% {
+                background-color: blue;
+                box-shadow: 0 0 20px blue;
+            }
+            100% {
+                background-color: white;
+                box-shadow: 0 0 20px white;
+            }
+        }
+
+        .info-box {
+            background: #333;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .predicted-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: limegreen;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 5px limegreen, 0 0 10px limegreen, 0 0 15px limegreen;
+            }
+            100% {
+                text-shadow: 0 0 10px limegreen, 0 0 20px limegreen, 0 0 30px limegreen;
+            }
+        }
+
+        .history-box {
+            background: #444;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .history-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-box th, .history-box td {
+            border-bottom: 1px solid gray;
+            padding: 5px;
+        }
+
+        .history-box th {
+            color: Red;
+            font-size: 16px;
+        }
+
+        .history-box td {
+            font-size: 14px;
+        }
+
+        .accuracy-box {
+            margin-top: 20px;
+            font-size: 18px;
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="info-box">
+            <p> Prediction No ➤  <span id="issueNumber"></span></p>
+            <p>Time Left: <span id="timer"></span></p>
+        </div>
+
+        <p class="predicted-number">Bet Prediction ➤ <span id="predicted"></span> (<span id="bigSmall"></span>)</p>
+
+        <div class="history-box">
+            <p style="color: red; font-size: 18px; font-weight: bold;">Previous Results</p>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Number</th>
+                    <th>Result</th>
+                </tr>
+                <tbody id="history"></tbody>
+            </table>
+        </div>
+
+        <div class="accuracy-box">
+            Winning Accuracy: <span id="accuracy">0%</span><br>
+            BIG Accuracy: <span id="bigAccuracy">0%</span><br>
+            SMALL Accuracy: <span id="smallAccuracy">0%</span>
+        </div>
+    </div>
+
+    <script>
+        let totalPredictions = 0;
+        let correctPredictions = 0;
+        let bigPredictions = 0;
+        let correctBigPredictions = 0;
+        let smallPredictions = 0;
+        let correctSmallPredictions = 0;
+
+        function generatePeriodNumber() {
+            let now = new Date();
+            let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert to UTC
+
+            let year = utc.getFullYear();
+            let month = String(utc.getMonth() + 1).padStart(2, '0');
+            let day = String(utc.getDate()).padStart(2, '0');
+            let minutes = utc.getHours() * 60 + utc.getMinutes();
+
+            return `${year}${month}${day}1000${10001 + minutes}`;
+        }
+
+        function getRandomResult() {
+            let number = Math.floor(Math.random() * 10); // Random number 0-9
+            let bigSmall = (number >= 5) ? "BIG" : "SMALL"; // BIG if >=5, SMALL otherwise
+            return { number, bigSmall };
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                let now = new Date();
+                let seconds = now.getSeconds();
+                let remainingSeconds = 60 - seconds;
+
+                let formattedTime = `   00  :  ${String(remainingSeconds).padStart(2, '0')}`;
+                document.getElementById("timer").textContent = formattedTime.replaceAll("(?<=\\d)(?=\\d)", " ");
+            }, 1000);
+        }
+
+        function updatePeriodAndResult() {
+            let currentPeriod = "";
+            
+            setInterval(() => {
+                let newPeriod = generatePeriodNumber();
+                
+                if (newPeriod !== currentPeriod) {
+                    currentPeriod = newPeriod;
+                    document.getElementById("issueNumber").textContent = currentPeriod;
+                    
+                    let { number, bigSmall } = getRandomResult();
+                    document.getElementById("predicted").textContent = number;
+                    document.getElementById("bigSmall").textContent = bigSmall;
+
+                    // Update history
+                    let historyTable = document.getElementById("history");
+                    let newRow = `<tr><td>${currentPeriod}</td><td>${number}</td><td>${bigSmall}</td></tr>`;
+                    historyTable.innerHTML = newRow + historyTable.innerHTML;
+
+                    // Update accuracy
+                    totalPredictions++;
+                    if ((bigSmall === "BIG" && number >= 5) || (bigSmall === "SMALL" && number < 5)) {
+                        correctPredictions++;
+                    }
+
+                    // Update BIG and SMALL accuracy
+                    if (bigSmall === "BIG") {
+                        bigPredictions++;
+                        if (number >= 5) {
+                            correctBigPredictions++;
+                        }
+                    } else {
+                        smallPredictions++;
+                        if (number < 5) {
+                            correctSmallPredictions++;
+                        }
+                    }
+
+                    // Calculate accuracies
+                    let accuracy = ((correctPredictions / totalPredictions) * 100).toFixed(2);
+                    let bigAccuracy = bigPredictions > 0 ? ((correctBigPredictions / bigPredictions) * 100).toFixed(2) : 0;
+                    let smallAccuracy = smallPredictions > 0 ? ((correctSmallPredictions / smallPredictions) * 100).toFixed(2) : 0;
+
+                    document.getElementById("accuracy").textContent = `${accuracy}%`;
+                    document.getElementById("bigAccuracy").textContent = `${bigAccuracy}%`;
+                    document.getElementById("smallAccuracy").textContent = `${smallAccuracy}%`;
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            startTimer();
+            updatePeriodAndResult();
+        };
+    </script>
+
+</body>
+</html>

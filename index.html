@@ -47,13 +47,6 @@
             margin: 10px 0;
         }
 
-        .info-boxx {
-            background: #F44336;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-
         .predicted-number {
             font-size: 20px;
             font-weight: bold;
@@ -88,24 +81,12 @@
         }
 
         .history-box th {
-            color: Red;
+            color: yellow;
             font-size: 16px;
         }
 
         .history-box td {
             font-size: 14px;
-        }
-
-        .accuracy-box {
-            margin-top: 20px;
-            font-size: 18px;
-            color: yellow;
-        }
-
-        .ping-status {
-            margin-top: 10px;
-            font-size: 16px;
-            color: green;
         }
     </style>
 </head>
@@ -113,47 +94,26 @@
 
     <div class="container">
         <div class="info-box">
-            <p> Prediction No ➤  <span id="issueNumber"></span></p>
+            <p>Issue Number: <span id="issueNumber"></span></p>
             <p>Time Left: <span id="timer"></span></p>
         </div>
 
-        <div class="info-boxx">
-            <p class="predicted-number">Bet Prediction ➤ <span id="predicted"></span> (<span id="bigSmall"></span>)</p>
+        <p class="predicted-number">Predicted Number: <span id="predicted"></span> (<span id="bigSmall"></span>)</p>
 
-            <div class="history-box">
-                <p style="color: red; font-size: 18px; font-weight: bold;">Previous Results</p>
-                <table>
-                    <tr>
-                        <th>Issue</th>
-                        <th>Number</th>
-                        <th>Result</th>
-                    </tr>
-                    <tbody id="history"></tbody>
-                </table>
-            </div>
-
-            <div class="accuracy-box">
-                Winning Accuracy: <span id="accuracy">0%</span><br>
-                BIG Accuracy: <span id="bigAccuracy">0%</span><br>
-                SMALL Accuracy: <span id="smallAccuracy">0%</span><br>
-                Winning Count: <span id="winningCount">0</span><br>
-                Losing Count: <span id="losingCount">0</span>
-            </div>
-
-            <div class="ping-status" id="pingStatus">Checking internet connection...</div>
+        <div class="history-box">
+            <p style="color: yellow; font-size: 18px; font-weight: bold;">Previous Results</p>
+            <table>
+                <tr>
+                    <th>Issue</th>
+                    <th>Number</th>
+                    <th>Result</th>
+                </tr>
+                <tbody id="history"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        let totalPredictions = 0;
-        let correctPredictions = 0;
-        let bigPredictions = 0;
-        let correctBigPredictions = 0;
-        let smallPredictions = 0;
-        let correctSmallPredictions = 0;
-        let winningCount = 0;
-        let losingCount = 0;
-
         function generatePeriodNumber() {
             let now = new Date();
             let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert to UTC
@@ -197,63 +157,16 @@
                     document.getElementById("predicted").textContent = number;
                     document.getElementById("bigSmall").textContent = bigSmall;
 
-                    // Update history
                     let historyTable = document.getElementById("history");
                     let newRow = `<tr><td>${currentPeriod}</td><td>${number}</td><td>${bigSmall}</td></tr>`;
                     historyTable.innerHTML = newRow + historyTable.innerHTML;
-
-                    // Update accuracy
-                    totalPredictions++;
-                    if ((bigSmall === "BIG" && number >= 5) || (bigSmall === "SMALL" && number < 5)) {
-                        correctPredictions++;
-                        winningCount++;
-                    } else {
-                        losingCount++;
-                    }
-
-                    // Update BIG and SMALL accuracy
-                    if (bigSmall === "BIG") {
-                        bigPredictions++;
-                        if (number >= 5) {
-                            correctBigPredictions++;
-                        }
-                    } else {
-                        smallPredictions++;
-                        if (number < 5) {
-                            correctSmallPredictions++;
-                        }
-                    }
-
-                    // Calculate accuracies
-                    let accuracy = ((correctPredictions / totalPredictions) * 100).toFixed(2);
-                    let bigAccuracy = bigPredictions > 0 ? ((correctBigPredictions / bigPredictions) * 100).toFixed(2) : 0;
-                    let smallAccuracy = smallPredictions > 0 ? ((correctSmallPredictions / smallPredictions) * 100).toFixed(2) : 0;
-
-                    document.getElementById("accuracy").textContent = `${accuracy}%`;
-                    document.getElementById("bigAccuracy").textContent = `${bigAccuracy}%`;
-                    document.getElementById("smallAccuracy").textContent = `${smallAccuracy}%`;
-                    document.getElementById("winningCount").textContent = winningCount;
-                    document.getElementById("losingCount").textContent = losingCount;
                 }
             }, 1000);
-        }
-
-        function checkInternetConnection() {
-            setInterval(() => {
-                fetch('https://www.google.com/favicon.ico', { method: 'HEAD' })
-                    .then(() => {
-                        document.getElementById("pingStatus").textContent = "Internet Status: Connected";
-                    })
-                    .catch(() => {
-                        document.getElementById("pingStatus").textContent = "Internet Status: Disconnected";
-                    });
-            }, 5000); // Check every 5 seconds
         }
 
         window.onload = function () {
             startTimer();
             updatePeriodAndResult();
-            checkInternetConnection();
         };
     </script>
 

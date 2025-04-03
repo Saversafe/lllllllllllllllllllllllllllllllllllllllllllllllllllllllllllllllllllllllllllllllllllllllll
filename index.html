@@ -12,7 +12,6 @@
             background-color: #111;
             color: white;
             text-align: center;
-            transition: background-color 0.5s, color 0.5s;
         }
 
         .container {
@@ -43,6 +42,13 @@
 
         .info-box {
             background: #333;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .info-boxx {
+            background: #F44336;
             padding: 10px;
             border-radius: 8px;
             margin: 10px 0;
@@ -96,10 +102,10 @@
             color: yellow;
         }
 
-        .ping-box {
-            margin-top: 20px;
-            font-size: 18px;
-            color: limegreen; /* Green color for ping */
+        .ping-status {
+            margin-top: 10px;
+            font-size: 16px;
+            color: green;
         }
     </style>
 </head>
@@ -111,28 +117,30 @@
             <p>Time Left: <span id="timer"></span></p>
         </div>
 
-        <p class="predicted-number">Bet Prediction ➤ <span id="predicted"></span> (<span id="bigSmall"></span>)</p>
+        <div class="info-boxx">
+            <p class="predicted-number">Bet Prediction ➤ <span id="predicted"></span> (<span id="bigSmall"></span>)</p>
 
-        <div class="history-box">
-            <p style="color: red; font-size: 18px; font-weight: bold;">Previous Results</p>
-            <table>
-                <tr>
-                    <th>Issue</th>
-                    <th>Number</th>
-                    <th>Result</th>
-                </tr>
-                <tbody id="history"></tbody>
-            </table>
-        </div>
+            <div class="history-box">
+                <p style="color: red; font-size: 18px; font-weight: bold;">Previous Results</p>
+                <table>
+                    <tr>
+                        <th>Issue</th>
+                        <th>Number</th>
+                        <th>Result</th>
+                    </tr>
+                    <tbody id="history"></tbody>
+                </table>
+            </div>
 
-        <div class="accuracy-box">
-            Winning Accuracy: <span id="accuracy">0%</span><br>
-            BIG Accuracy: <span id="bigAccuracy">0%</span><br>
-            SMALL Accuracy: <span id="smallAccuracy">0%</span>
-        </div>
+            <div class="accuracy-box">
+                Winning Accuracy: <span id="accuracy">0%</span><br>
+                BIG Accuracy: <span id="bigAccuracy">0%</span><br>
+                SMALL Accuracy: <span id="smallAccuracy">0%</span><br>
+                Winning Count: <span id="winningCount">0</span><br>
+                Losing Count: <span id="losingCount">0</span>
+            </div>
 
-        <div class="ping-box">
-            Internet Ping: <span id="ping">0 ms</span>
+            <div class="ping-status" id="pingStatus">Checking internet connection...</div>
         </div>
     </div>
 
@@ -143,6 +151,8 @@
         let correctBigPredictions = 0;
         let smallPredictions = 0;
         let correctSmallPredictions = 0;
+        let winningCount = 0;
+        let losingCount = 0;
 
         function generatePeriodNumber() {
             let now = new Date();
@@ -196,6 +206,9 @@
                     totalPredictions++;
                     if ((bigSmall === "BIG" && number >= 5) || (bigSmall === "SMALL" && number < 5)) {
                         correctPredictions++;
+                        winningCount++;
+                    } else {
+                        losingCount++;
                     }
 
                     // Update BIG and SMALL accuracy
@@ -219,38 +232,28 @@
                     document.getElementById("accuracy").textContent = `${accuracy}%`;
                     document.getElementById("bigAccuracy").textContent = `${bigAccuracy}%`;
                     document.getElementById("smallAccuracy").textContent = `${smallAccuracy}%`;
+                    document.getElementById("winningCount").textContent = winningCount;
+                    document.getElementById("losingCount").textContent = losingCount;
                 }
             }, 1000);
         }
 
-        function changeTheme() {
-            const themes = [
-                { background: '#111', color: 'white' },
-                { background: '#222', color: 'yellow' },
-                { background: '#333', color: 'lightblue' },
-                { background: '#444', color: 'lightgreen' },
-                { background: '#555', color: 'orange' }
-            ];
-            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-            document.body.style.backgroundColor = randomTheme.background;
-            document.body.style.color = randomTheme.color;
-        }
-
-        function updatePing() {
-            // Simulate a ping value (you can replace this with an actual ping check if needed)
-            const pingValue = Math.floor(Math.random() * 100); // Simulated ping value between 0 and 99 ms
-            document.getElementById("ping").textContent = `${pingValue} ms`;
+        function checkInternetConnection() {
+            setInterval(() => {
+                fetch('https://www.google.com/favicon.ico', { method: 'HEAD' })
+                    .then(() => {
+                        document.getElementById("pingStatus").textContent = "Internet Status: Connected";
+                    })
+                    .catch(() => {
+                        document.getElementById("pingStatus").textContent = "Internet Status: Disconnected";
+                    });
+            }, 5000); // Check every 5 seconds
         }
 
         window.onload = function () {
             startTimer();
             updatePeriodAndResult();
-            changeTheme(); // Change theme on load
-            setInterval(() => {
-                changeTheme(); // Change theme every 15 seconds
-                location.reload(); // Refresh the page every 15 seconds
-            }, 15000);
-            setInterval(updatePing, 2000); // Update ping every 2 seconds
+            checkInternetConnection();
         };
     </script>
 

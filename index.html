@@ -12,6 +12,7 @@
             background-color: #111;
             color: white;
             text-align: center;
+            transition: background-color 0.5s, color 0.5s;
         }
 
         .container {
@@ -94,6 +95,12 @@
             font-size: 18px;
             color: yellow;
         }
+
+        .ping-box {
+            margin-top: 20px;
+            font-size: 18px;
+            color: limegreen; /* Green color for ping */
+        }
     </style>
 </head>
 <body>
@@ -122,6 +129,10 @@
             Winning Accuracy: <span id="accuracy">0%</span><br>
             BIG Accuracy: <span id="bigAccuracy">0%</span><br>
             SMALL Accuracy: <span id="smallAccuracy">0%</span>
+        </div>
+
+        <div class="ping-box">
+            Internet Ping: <span id="ping">0 ms</span>
         </div>
     </div>
 
@@ -212,9 +223,34 @@
             }, 1000);
         }
 
+        function changeTheme() {
+            const themes = [
+                { background: '#111', color: 'white' },
+                { background: '#222', color: 'yellow' },
+                { background: '#333', color: 'lightblue' },
+                { background: '#444', color: 'lightgreen' },
+                { background: '#555', color: 'orange' }
+            ];
+            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+            document.body.style.backgroundColor = randomTheme.background;
+            document.body.style.color = randomTheme.color;
+        }
+
+        function updatePing() {
+            // Simulate a ping value (you can replace this with an actual ping check if needed)
+            const pingValue = Math.floor(Math.random() * 100); // Simulated ping value between 0 and 99 ms
+            document.getElementById("ping").textContent = `${pingValue} ms`;
+        }
+
         window.onload = function () {
             startTimer();
             updatePeriodAndResult();
+            changeTheme(); // Change theme on load
+            setInterval(() => {
+                changeTheme(); // Change theme every 15 seconds
+                location.reload(); // Refresh the page every 15 seconds
+            }, 15000);
+            setInterval(updatePing, 2000); // Update ping every 2 seconds
         };
     </script>
 

@@ -1,174 +1,189 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingo Predictor</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;700&display=swap');
 
-        body {
-            font-family: 'El Messiri', sans-serif;
-            background-color: #111;
-            color: white;
-            text-align: center;
-        }
+  <meta charset="UTF-8">
 
-        .container {
-            width: 90%;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 15px;
-            background: #222;
-            border-radius: 10px;
-            box-shadow: 0 0 10px yellow;
-            animation: colorChange 5s infinite alternate;
-        }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        @keyframes colorChange {
-            0% {
-                background-color: red;
-                box-shadow: 0 0 20px red;
-            }
-            50% {
-                background-color: blue;
-                box-shadow: 0 0 20px blue;
-            }
-            100% {
-                background-color: white;
-                box-shadow: 0 0 20px white;
-            }
-        }
+  <title></title>
 
-        .info-box {
-            background: #333;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
+  <style>
 
-        .predicted-number {
-            font-size: 20px;
-            font-weight: bold;
-            color: limegreen;
-            animation: glow 1.5s infinite alternate;
-        }
+    /* General Reset */
 
-        @keyframes glow {
-            0% {
-                text-shadow: 0 0 5px limegreen, 0 0 10px limegreen, 0 0 15px limegreen;
-            }
-            100% {
-                text-shadow: 0 0 10px limegreen, 0 0 20px limegreen, 0 0 30px limegreen;
-            }
-        }
+    body {
 
-        .history-box {
-            background: #444;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
+      margin: 0;
 
-        .history-box table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+      padding: 0;
 
-        .history-box th, .history-box td {
-            border-bottom: 1px solid gray;
-            padding: 5px;
-        }
+      display: flex;
 
-        .history-box th {
-            color: yellow;
-            font-size: 16px;
-        }
+      justify-content: center;
 
-        .history-box td {
-            font-size: 14px;
-        }
-    </style>
+      align-items: center;
+
+      height: 0vh;
+
+      background-color: #FFF;
+
+      overflow: hidden;
+
+      font-family: Arial, sans-serif;
+
+    }
+
+    /* Splash Screen Container */
+
+    .splash-screen {
+
+      position: relative;
+
+      width: 100%;
+
+      height: 100%;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      background-color: #FFF;
+
+      animation: fadeIn 2s ease-in-out forwards;
+
+    }
+
+    /* Image Styling */
+
+    .splash-screen img {
+
+      width: 80%;
+
+      max-width: 800px;
+
+      opacity: 0;
+
+      animation: slideIn 2s ease-in-out forwards;
+
+    }
+
+    /* Running Text Container */
+
+    .running-text {
+
+      position: absolute;
+
+      bottom: 30px;
+
+      width: 100%;
+
+      text-align: center;
+
+      color: #fff;
+
+      font-size: 20px;
+
+      font-weight: bold;
+
+      overflow: hidden;
+
+      animation: fadeInText 2s 1s ease-in-out forwards;
+
+      opacity: 0;
+
+    }
+
+    /* Animations */
+
+    @keyframes fadeIn {
+
+      0% {
+
+        background-color: #FFF;
+
+      }
+
+      100% {
+
+        background-color: #FFF;
+
+      }
+
+    }
+
+    @keyframes slideIn {
+
+      0% {
+
+        opacity: 0;
+
+        transform: scale(0.8);
+
+      }
+
+      100% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+      }
+
+    }
+
+    @keyframes fadeInText {
+
+      0% {
+
+        opacity: 0;
+
+      }
+
+      100% {
+
+        opacity: 1;
+
+      }
+
+    }
+
+  </style>
+
+  <script>
+
+    // Redirect after 2 seconds
+
+    setTimeout(() => {
+
+      window.location.href =  "https://enzosrs.github.io/Mdx-Pvt";
+
+    }, 0);
+
+  </script>
+
 </head>
+
 <body>
 
-    <div class="container">
-        <div class="info-box">
-            <p>Issue Number: <span id="issueNumber"></span></p>
-            <p>Time Left: <span id="timer"></span></p>
-        </div>
+  <div class="splash-screen">
 
-        <p class="predicted-number">Predicted Number: <span id="predicted"></span> (<span id="bigSmall"></span>)</p>
+    <!-- Background Image -->
 
-        <div class="history-box">
-            <p style="color: yellow; font-size: 18px; font-weight: bold;">Previous Results</p>
-            <table>
-                <tr>
-                    <th>Issue</th>
-                    <th>Number</th>
-                    <th>Result</th>
-                </tr>
-                <tbody id="history"></tbody>
-            </table>
-        </div>
-    </div>
+    <img src="https://firebasestorage.googleapis.com/v0/b/sanumusic-3c12a.appspot.com/o/Picsart_25-02-15_00-07-52-746.jpg?alt=media&token=b809625f-8b0d-4852-a1b5-84419f17f2e7" alt="Splash Screen">
 
-    <script>
-        function generatePeriodNumber() {
-            let now = new Date();
-            let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert to UTC
+    
 
-            let year = utc.getFullYear();
-            let month = String(utc.getMonth() + 1).padStart(2, '0');
-            let day = String(utc.getDate()).padStart(2, '0');
-            let minutes = utc.getHours() * 60 + utc.getMinutes();
+    <!-- Running Text -->
 
-            return `${year}${month}${day}1000${10001 + minutes}`;
-        }
+    <div class="running-text">ᯓ 𝗦𝗥 ≽ 𝗔𝗻𝗱𝗿☻𝗶𝗱 ᯓ</div>
 
-        function getRandomResult() {
-            let number = Math.floor(Math.random() * 10); // Random number 0-9
-            let bigSmall = (number >= 5) ? "BIG" : "SMALL"; // BIG if >=5, SMALL otherwise
-            return { number, bigSmall };
-        }
-
-        function startTimer() {
-            setInterval(() => {
-                let now = new Date();
-                let seconds = now.getSeconds();
-                let remainingSeconds = 60 - seconds;
-
-                let formattedTime = `   00  :  ${String(remainingSeconds).padStart(2, '0')}`;
-                document.getElementById("timer").textContent = formattedTime.replaceAll("(?<=\\d)(?=\\d)", " ");
-            }, 1000);
-        }
-
-        function updatePeriodAndResult() {
-            let currentPeriod = "";
-            
-            setInterval(() => {
-                let newPeriod = generatePeriodNumber();
-                
-                if (newPeriod !== currentPeriod) {
-                    currentPeriod = newPeriod;
-                    document.getElementById("issueNumber").textContent = currentPeriod;
-                    
-                    let { number, bigSmall } = getRandomResult();
-                    document.getElementById("predicted").textContent = number;
-                    document.getElementById("bigSmall").textContent = bigSmall;
-
-                    let historyTable = document.getElementById("history");
-                    let newRow = `<tr><td>${currentPeriod}</td><td>${number}</td><td>${bigSmall}</td></tr>`;
-                    historyTable.innerHTML = newRow + historyTable.innerHTML;
-                }
-            }, 1000);
-        }
-
-        window.onload = function () {
-            startTimer();
-            updatePeriodAndResult();
-        };
-    </script>
+  </div>
 
 </body>
+
 </html>

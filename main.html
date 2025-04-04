@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ᯓ 𝗦𝗥 ≽ 𝗔𝗻𝗱𝗿☻𝗶𝗱 ᯓ</title>
+    <style>
+      /* General Body Style */
+body {
+    font-family: 'Courier New', monospace;
+    background: url('your-background-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-variant: small-caps;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #0a0a0a; /* Dark background for hacker vibe */
+    text-align: center; /* Center content horizontally */
+}
+
+/* Container with Animation */
+.prediction-container {
+    text-align: center;
+    position: relative;
+    top: 0;
+    width: 80%; /* Adjust width for centralizing */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideIn 1s ease-out; /* Animation on load */
+    box-shadow: 0 4px 15px rgba(0, 0, 255, 0.4); /* Violet shadow */
+}
+
+.prediction-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 0, 255, 0.6); /* Hover effect with stronger shadow */
+}
+
+/* Heading Styles */
+h1 {
+    font-size: 32px;
+    color: #00B0FF; /* Violet for hacker theme */
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #00B0FF, 0 0 20px #00B0FF; /* Glowing text effect */
+}
+
+/* Game Info */
+.game-info {
+    margin: 20px 0;
+    font-weight: bold;
+    color: #d1a6ff;
+    font-size: 18px;
+}
+
+/* Divider Style */
+.divider {
+    margin: 25px 0;
+    border-bottom: 1px solid #00B0FF;
+}
+
+/* Prediction Text */
+.prediction {
+    font-size: 22px;
+    color: #fff;
+    margin: 10px 0;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00B0FF, 0 0 20px #00B0FF; /* Glowing effect */
+}
+
+.prediction span {
+    display: inline-block;
+    font-size: 24px;
+    color: #00B0FF;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+/* Button Container */
+.button-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Allow buttons to wrap in case of smaller screen sizes */
+}
+
+/* Button Styles */
+button, .kwg-button, .telegram-button {
+    padding: 14px 36px;
+    border: none;
+    color: #fff;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    background-color: #440a8f; /* Violet background */
+    box-shadow: 0 4px 10px rgba(0, 0, 255, 0.3);
+}
+
+.kwg-button {
+    background-color: #f24d57; /* Red button */
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
+}
+
+.telegram-button {
+    background-color: #0088cc; /* Blue button */
+    box-shadow: 0 4px 10px rgba(0, 136, 204, 0.4);
+}
+
+/* Button Hover Effects */
+button:hover, .kwg-button:hover, .telegram-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 255, 0.6);
+}
+
+/* Timer Style */
+.timer {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4b4b6a;
+    padding: 8px 16px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 10px;
+    animation: fadeIn 2s ease-out; /* Fade-in effect */
+}
+
+/* History Section */
+.history {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #fff;
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #00B0FF;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 4px 10px rgba(255, 0, 255, 0.4);
+}
+
+/* Animation for Prediction Container */
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Fade-in effect for Timer */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsiveness */
+
+/* For screens smaller than 768px */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    .prediction-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px; /* Smaller heading on mobile */
+    }
+
+    .game-info {
+        font-size: 16px;
+    }
+
+    .prediction {
+        font-size: 18px;
+    }
+
+    .button-container {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 15px;
+    }
+
+    button, .kwg-button, .telegram-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+
+    .timer {
+        font-size: 16px;
+        padding: 6px 12px;
+    }
+
+    .history {
+        font-size: 14px;
+        max-height: 150px; /* Reduce height for mobile */
+    }
+}
+
+/* For screens smaller than 480px */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px; /* Even smaller heading on very small screens */
+    }
+
+    .prediction {
+        font-size: 16px;
+    }
+
+    button, .kwg-button, .telegram-button {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+
+    .timer {
+        font-size: 14px;
+        padding: 4px 10px;
+    }
+
+    .history {
+        font-size: 12px;
+        max-height: 120px; /* Further reduce height on very small screens */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="prediction-container">
+        <h1>ᯓ 𝐒𝐑 ≽𝐌𝐄𝐓𝐑𝐈𝐗 ᯓ</h1>
+
+        <div class="game-info">
+            🕹 Game: Wingo 1 minute <br>
+            📟 Period Number: <span id="period-number"></span>
+        </div>
+
+        <div class="timer" id="countdown-timer">Time Remaining :- 30</div>
+
+        <div class="divider"></div>
+
+        <div class="prediction">
+            🎰 Colour: <span id="prediction-color"></span><br>
+            🗃 Size: <span id="prediction-size"></span><br>
+            🔘 Number: <span id="prediction-number"></span>
+        </div>
+
+        <div class="divider"></div>
+        
+                <div class="history" id="prediction-history">
+            <h4>Prediction History</h4>
+        </div>
+    </div>
+
+            <a href="https://t.me/SRandroid26" class="telegram-button">Join Telegram</a>
+        </div>
+        
+    <script>
+      const colorOptions = ["🔴 Red", "🟢 Green", "🟣 Violet"];
+const sizeOptions = ["Big", "Small"];
+const redNumbers = ["2", "4", "6", "8"];
+const greenNumbers = ["1", "3", "7", "9"];
+const violetNumbers = ["0", "5"];
+
+let predictionHistory = [];
+let colorPredictionHistory = [];
+let sizePredictionHistory = [];
+let numberPredictionHistory = [];
+
+function updateTimer() {
+  const currentTimeGMT = new Date().toISOString(); // Get current GMT time
+  const currentSeconds = new Date(currentTimeGMT).getUTCSeconds();
+  
+  const countdown = 60 - currentSeconds; // Calculate remaining seconds in the minute
+  document.getElementById("countdown-timer").innerText = `Time Remaining :- ${countdown}`;
+  
+  if (countdown === 60) {
+    generatePrediction(); // Generate a new prediction at the start of every minute
+  }
+}
+
+setInterval(updateTimer, 1000);
+
+function generatePrediction() {
+  const currentTimeGMT = new Date(); // Current GMT time
+  const hours = currentTimeGMT.getUTCHours();
+  const minutes = currentTimeGMT.getUTCMinutes();
+  const totalMinutes = hours * 60 + minutes;
+  const periodNumber = totalMinutes + 1;
+  
+  const predictionColor = getAIPredictedColor();
+  const predictionSize = getAIPredictedSize();
+  const predictionNumber = getAIPredictedNumber(predictionColor, predictionSize);
+  
+  document.getElementById("period-number").innerText = periodNumber;
+  document.getElementById("prediction-color").innerText = predictionColor;
+  document.getElementById("prediction-size").innerText = predictionSize;
+  document.getElementById("prediction-number").innerText = predictionNumber;
+  
+  const predictionResult = `Period ${periodNumber}: ${predictionColor}, ${predictionSize}, ${predictionNumber}`;
+  predictionHistory.unshift(predictionResult);
+  if (predictionHistory.length > 10) predictionHistory.pop();
+  
+  colorPredictionHistory.unshift(predictionColor);
+  sizePredictionHistory.unshift(predictionSize);
+  numberPredictionHistory.unshift(predictionNumber);
+  
+  updateHistoryDisplay();
+}
+
+function getAIPredictedColor() {
+  const previousColor = colorPredictionHistory[0];
+  const dangerFactor = (Math.random() < 0.2); // 20% chance of danger condition
+  if (dangerFactor) {
+    // Shift to another color if the same color appeared frequently
+    if (previousColor === "🔴 Red") {
+      return Math.random() < 0.5 ? "🟢 Green" : "🟣 Violet";
+    } else if (previousColor === "🟢 Green") {
+      return Math.random() < 0.5 ? "🔴 Red" : "🟣 Violet";
+    } else {
+      return Math.random() < 0.5 ? "🔴 Red" : "🟢 Green";
+    }
+  }
+  return getRandomColor();
+}
+
+function getAIPredictedSize() {
+  const previousSize = sizePredictionHistory[0];
+  const dangerFactor = (Math.random() < 0.2); // 20% chance of danger condition
+  if (dangerFactor) {
+    // Switch size if the same size has been predicted multiple times
+    if (previousSize === "Big") {
+      return "Small";
+    } else {
+      return "Big";
+    }
+  }
+  return getRandomSize();
+}
+
+function getAIPredictedNumber(color, size) {
+  let numbers;
+  if (color === "🟣 Violet") {
+    numbers = size === "Small" ? violetNumbers[0] : violetNumbers[1];
+  } else if (color === "🔴 Red") {
+    numbers = size === "Small" ? redNumbers.slice(0, 2) : redNumbers.slice(2, 4);
+  } else {
+    numbers = size === "Small" ? greenNumbers.slice(0, 2) : greenNumbers.slice(2, 4);
+  }
+  
+  // Danger logic to avoid repeated numbers
+  const dangerFactor = (Math.random() < 0.2); // 20% chance of danger condition
+  if (dangerFactor) {
+    const previousNumber = numberPredictionHistory[0];
+    // Switch to an alternative number if the same number appeared recently
+    if (numbers.includes(previousNumber)) {
+      numbers = numbers.filter(num => num !== previousNumber);
+    }
+  }
+  
+  return Array.isArray(numbers) ? numbers[Math.floor(Math.random() * numbers.length)] : numbers;
+}
+
+function getRandomColor() {
+  const rand = Math.random();
+  if (rand < 0.4) return colorOptions[0];
+  else if (rand < 0.7) return colorOptions[1];
+  else return colorOptions[2];
+}
+
+function getRandomSize() {
+  return Math.random() < 0.5 ? sizeOptions[0] : sizeOptions[1];
+}
+
+function updateHistoryDisplay() {
+  const historyContainer = document.getElementById("prediction-history");
+  historyContainer.innerHTML = "<h4>Prediction History</h4>";
+  predictionHistory.forEach((result) => {
+    const div = document.createElement("div");
+    div.innerText = result;
+    historyContainer.appendChild(div);
+  });
+}
+
+window.onload = generatePrediction;
+    </script>
+</body>
+</html>
